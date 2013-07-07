@@ -28,6 +28,16 @@ body {
     font-weight:bold; 
     color:#474747; 
 } */
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+
+
 .title, .date, .showcase {
 	display:none;
 }
@@ -61,6 +71,8 @@ body {
     position: fixed;
     display: none;
 } 
+
+
 #feature-image .global_bkgd{ 
     background:#000; 
     height:100%; 
@@ -69,6 +81,7 @@ body {
     padding:0;
     opacity:0.4;
 	filter:alpha(opacity=40); /* For IE8 and earlier */
+	
 } 
 .showcase-title {
 	float: left;

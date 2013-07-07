@@ -44,7 +44,7 @@ CORE.create_module('image-panel', function(sb) {
 });
 
 CORE.create_module('feature-image', function(sb) {
-	var featured;
+	var featured,bkgd;
 	
 	function reset(el) {
 		el.parentNode.style.display = 'none';
@@ -66,18 +66,17 @@ CORE.create_module('feature-image', function(sb) {
 		return el
 	}
 	function createBkgd() {
-		var bkgd = sb.create_element('div', {'class': 'global_bkgd'});
-		
+		bkgd = sb.create_element('div', {'class': 'global_bkgd'});
 		sb.addEvent(bkgd, function() {
 			reset(featured);
 		});
-		
 		return bkgd;
 	}
 	
 	return {
 		init: function() {
 			featured = sb.find('ul')[0]; //find first ul element within html sandbox (feature-image)
+			featured.parentNode.insertBefore(createBkgd(),featured);
 			
 			sb.listen({
 				'feature-image': this.addImage
@@ -88,7 +87,7 @@ CORE.create_module('feature-image', function(sb) {
 			sb.ignore(['feature-image']);
 		},
 		addImage: function(image) {
-				var entry, img, bkgd;
+				var entry, img;
 				
 				entry = sb.create_element('li', {id: 'showcase-' + image.id, children: [
 					sb.create_element('span', {'class': 'showcase-image', src: image.src}),
@@ -101,11 +100,13 @@ CORE.create_module('feature-image', function(sb) {
 					reset(featured);
 				});
 				
+				
+				sb.fadeIn(bkgd, 1000, 0, 0.25) //this only loads the background once with the animation
+				featured.parentNode.style.display = "block";
+				
 				img = entry.getElementsByTagName('img')[0];
 				img.onload = function() {
 					centerImage(entry);
-					featured.parentNode.insertBefore(createBkgd(),featured);
-					featured.parentNode.style.display = "block";
 				};
 				
 				featured.appendChild(entry);

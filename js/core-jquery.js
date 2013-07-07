@@ -137,6 +137,7 @@ var CORE = (function() {
 			}
 		},
 		
+		
 		is_arr: function(arr) {
 			return jQuery.isArray(arr);
 		},

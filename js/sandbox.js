@@ -1,6 +1,32 @@
 var Sandbox = {
 	create: function(core, module_selector) {
 		var CONTAINER = core.dom.query('#' + module_selector); //create the html sandbox based on module_selector
+		
+		//http://javascript.info/tutorial/animation#css-transitions
+		function animate(opts) {
+			var start = new Date;  
+			var id = setInterval(function() {
+
+				var timePassed = new Date - start;
+
+				var progress = timePassed / opts.duration;
+				if (progress > 1) progress = 1;
+				var delta = opts.delta(progress);
+				opts.step(delta);
+				if (progress == 1) {
+					clearInterval(id);
+				}
+			}, opts.delay || 10);
+		}
+		
+		function linear(progress,x) {
+		  return progress
+		}
+		function quad(progress) {
+			return Math.pow(progress, 2)
+		}
+
+
 		return {
 			find: function(selector) {
 				return CONTAINER.query(selector); //returns only elements within the html sandbox
@@ -53,6 +79,20 @@ var Sandbox = {
 					core.dom.apply_attrs(el, config);
 				}
 				return el;
+			},
+			fadeIn: function(element, duration, from, to) {
+				to = to - from;
+				element.style.opacity = from;
+				
+				animate({
+					delay: 10,
+					duration: duration || 1000, // 1 sec by default
+					delta: quad,
+					step: function(delta) {
+						element.style.opacity = (to * delta) + from;
+					}
+				})
+
 			}
 		};
 	}
